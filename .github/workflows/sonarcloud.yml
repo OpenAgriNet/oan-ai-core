@@ -1,0 +1,32 @@
+name: SonarCloud
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: ["main"]
+
+jobs:
+  sonarcloud:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.organization=openagrinet
+            -Dsonar.projectKey=OpenAgriNet_oan-ai-core
+            -Dsonar.sources=.
+            -Dsonar.exclusions=**/.venv/**,**/venv/**,**/__pycache__/**,**/*.pyc,**/.pytest_cache/**,**/build/**,**/dist/**,**/.eggs/**,**/*.egg-info/**
+            -Dsonar.pullrequest.key=${{ github.event.pull_request.number }}
+            -Dsonar.pullrequest.branch=${{ github.head_ref }}
+            -Dsonar.pullrequest.base=${{ github.base_ref }}
