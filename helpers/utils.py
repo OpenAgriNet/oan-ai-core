@@ -1,6 +1,6 @@
 import os
 import logging
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 def get_logger(name):
     logger = logging.getLogger(name)
@@ -17,9 +17,16 @@ def get_prompt(prompt_file: str, context: dict = {}, prompt_dir: str = "assets/p
         prompt_file += ".md"
     
     # Ensure usage of absolute or relative path correctly
-    base_dir = os.getcwd()
-    full_prompt_dir = os.path.join(base_dir, prompt_dir)
+    # Use path relative to this file to be robust against CWD changes
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(current_dir)
+    full_prompt_dir = os.path.join(project_root, prompt_dir)
     
-    env = Environment(loader=FileSystemLoader(full_prompt_dir), autoescape=False)
+    # autoescape=False is safe here because we are generating text/markdown prompts for LLM,
+    # not HTML for a browser. select_autoescape defaults to False for non-html/xml extensions.
+    env = Environment(
+        loader=FileSystemLoader(full_prompt_dir),
+        autoescape=select_autoescape(['html', 'xml'])
+    )
     template = env.get_template(prompt_file)
     return template.render(**context)
