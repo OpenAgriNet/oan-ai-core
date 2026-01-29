@@ -21,7 +21,7 @@ class TestUtils(unittest.TestCase):
         # Assuming DEBUG is the default level set in get_logger
         import logging
         self.assertEqual(logger.level, logging.DEBUG)
-        self.assertTrue(len(logger.handlers) > 0)
+        self.assertGreater(len(logger.handlers), 0)
 
     @patch('helpers.utils.Environment')
     def test_get_prompt_logic(self, mock_env_cls):
