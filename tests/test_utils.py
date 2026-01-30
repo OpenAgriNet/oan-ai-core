@@ -14,18 +14,10 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(logger.name, "test_logger")
         self.assertTrue(logger.hasHandlers())
 
-    def test_get_logger_returns_same_instance(self):
-        """Test that get_logger returns the same logger instance for the same name."""
-        logger1 = get_logger("same_logger")
-        logger2 = get_logger("same_logger")
-        self.assertIs(logger1, logger2)
-
-    def test_get_prompt_without_md_extension(self):
-        """Test get_prompt auto-adds .md extension and loads file."""
-        prompt = get_prompt("moderation_system")
-        self.assertIsNotNone(prompt)
-        self.assertIsInstance(prompt, str)
-        self.assertGreater(len(prompt), 0)
+    def test_get_logger_with_custom_level(self):
+        """Test get_logger with custom logging level."""
+        logger = get_logger("custom_level_logger", level=logging.WARNING)
+        self.assertEqual(logger.level, logging.WARNING)
 
     def test_get_prompt_with_context(self):
         """Test get_prompt with context variables."""

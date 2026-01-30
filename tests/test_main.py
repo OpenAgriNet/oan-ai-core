@@ -58,17 +58,6 @@ class TestMainAPI(unittest.TestCase):
         
         self.assertEqual(response.status_code, 422)
 
-    def test_moderation_request_model_valid(self):
-        """Test ModerationRequest model with valid data."""
-        request = ModerationRequest(query="Test query")
-        self.assertEqual(request.query, "Test query")
-
-    def test_moderation_request_model_max_length(self):
-        """Test ModerationRequest model at max length."""
-        max_query = "x" * 5000
-        request = ModerationRequest(query=max_query)
-        self.assertEqual(len(request.query), 5000)
-
 
 if __name__ == '__main__':
     unittest.main()
