@@ -1,5 +1,8 @@
 pydantic-ai
 python-dotenv
 jinja2
-logfire  # If used by pydantic-ai instrumentation
+logfire
 openai
+fastapi
+uvicorn
+httpx

@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel ,Field
+from pydantic import BaseModel, Field
 from agents.moderation import moderation_agent
 
 app = FastAPI(title="Moderation Microservice")
@@ -15,8 +15,6 @@ async def check_moderation(request: ModerationRequest):
         # Return the structured data directly
         return result.data
     except Exception as e:
-        # Log the full error for debugging
-        # logger.error(f"Moderation failed: {e}") # Assuming logger is available or print for now
         print(f"Error processing moderation request: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
 

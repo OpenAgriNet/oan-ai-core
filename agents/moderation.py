@@ -13,7 +13,6 @@ class QueryModerationResult(BaseModel):
         "invalid_external_reference",
         "unsafe_illegal",
         "political_controversial"
-        # ... add all categories relative to your prompt
     ]
     action: str
 

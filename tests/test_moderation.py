@@ -1,6 +1,6 @@
 
 import unittest
-from agents.moderation import moderation_agent
+from agents.moderation import moderation_agent, QueryModerationResult
 
 class TestModerationAgent(unittest.IsolatedAsyncioTestCase):
 
@@ -9,10 +9,7 @@ class TestModerationAgent(unittest.IsolatedAsyncioTestCase):
         query = "How to grow tomatoes?"
         result = await moderation_agent.run(query)
         
-        # Verify
         self.assertEqual(result.output.category, "valid_agricultural")
-        # LLM output varies, so we check if the action string is not empty or check for expected key phrases
-        # 'Proceed with the query' is what we saw in the logs
         self.assertIn("Proceed", result.output.action)
 
     async def test_moderation_agent_run_invalid(self):
@@ -28,9 +25,6 @@ class TestModerationAgent(unittest.IsolatedAsyncioTestCase):
         query = "Hola, ¿cómo estás?"
         result = await moderation_agent.run(query)
         
-        # Note: The LLM might categorize language issues differently than expected in loose prompts.
-        # Based on logs, it might have classified as invalid_non_agricultural or similar.
-        # We will check that it's NOT valid_agricultural
         self.assertNotEqual(result.output.category, "valid_agricultural")
         self.assertIn("Decline", result.output.action)
 
@@ -57,6 +51,15 @@ class TestModerationAgent(unittest.IsolatedAsyncioTestCase):
         
         self.assertEqual(result.output.category, "political_controversial")
         self.assertIn("Decline", result.output.action)
+
+    def test_query_moderation_result_str(self):
+        """Test QueryModerationResult string representation."""
+        result = QueryModerationResult(
+            category="valid_agricultural",
+            action="Proceed with the query"
+        )
+        str_repr = str(result)
+        self.assertEqual(str_repr, "[valid_agricultural] Proceed with the query")
 
 if __name__ == '__main__':
     unittest.main()
