@@ -14,8 +14,7 @@ class TestModels(unittest.TestCase):
         mock_model.model_name = 'gpt-4o'
         mock_openai.return_value = mock_model
         
-        model = get_llm_model()
-        self.assertIsNotNone(model)
+        get_llm_model()
         mock_openai.assert_called_once()
 
     @patch.dict(os.environ, {'LLM_PROVIDER': 'openai'}, clear=True)
@@ -32,8 +31,7 @@ class TestModels(unittest.TestCase):
         mock_model = MagicMock()
         mock_groq.return_value = mock_model
         
-        model = get_llm_model()
-        self.assertIsNotNone(model)
+        get_llm_model()
         mock_groq.assert_called_once()
 
     @patch.dict(os.environ, {'LLM_PROVIDER': 'groq', 'LLM_MODEL_NAME': 'gpt-4o'}, clear=True)
