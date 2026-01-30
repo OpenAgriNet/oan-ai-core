@@ -14,13 +14,19 @@ def get_logger(name: str, level: int = logging.INFO) -> logging.Logger:
         logging.Logger: Configured logger instance
     """
     logger = logging.getLogger(name)
-    if not logger.handlers:
-        ch = logging.StreamHandler()
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        ch.setFormatter(formatter)
-        ch.setLevel(level)
-        logger.addHandler(ch)
+    
+    # Remove existing handlers to prevent duplication and ensure consistent configuration
+    for handler in logger.handlers[:]:
+        logger.removeHandler(handler)
+    
+    # Add a new handler with the specified level
+    ch = logging.StreamHandler()
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    ch.setFormatter(formatter)
+    ch.setLevel(level)
+    logger.addHandler(ch)
     logger.setLevel(level)
+    
     return logger
 
 def get_prompt(prompt_file: str, context: dict = None, prompt_dir: str = "assets/prompts") -> str:

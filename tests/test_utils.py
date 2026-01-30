@@ -48,6 +48,27 @@ class TestUtils(unittest.TestCase):
         logger = get_logger("custom_level_logger", level=logging.WARNING)
         self.assertEqual(logger.level, logging.WARNING)
 
+    def test_get_logger_no_duplicate_handlers(self):
+        """Test that calling get_logger multiple times doesn't create duplicate handlers."""
+        logger_name = "test_no_duplicate_handlers"
+        
+        # First call with INFO level
+        logger1 = get_logger(logger_name, level=logging.INFO)
+        self.assertEqual(len(logger1.handlers), 1)
+        self.assertEqual(logger1.level, logging.INFO)
+        
+        # Second call with different level - should replace handler, not duplicate
+        logger2 = get_logger(logger_name, level=logging.WARNING)
+        self.assertEqual(len(logger2.handlers), 1)
+        self.assertEqual(logger2.level, logging.WARNING)
+        
+        # Verify it's the same logger instance
+        self.assertIs(logger1, logger2)
+        
+        # Third call with same level - still should have only one handler
+        logger3 = get_logger(logger_name, level=logging.WARNING)
+        self.assertEqual(len(logger3.handlers), 1)
+
 
 if __name__ == '__main__':
     unittest.main()
