@@ -8,11 +8,14 @@ from agents.models import LLM_MODEL
 class QueryModerationResult(BaseModel):
     category: Literal[
         "valid_agricultural",
-        "invalid_language", 
+        "invalid_language",
         "invalid_non_agricultural",
         "invalid_external_reference",
+        "invalid_compound_mixed",
         "unsafe_illegal",
-        "political_controversial"
+        "political_controversial",
+        "cultural_sensitive",
+        "role_obfuscation"
         # ... add all categories relative to your prompt
     ]
     action: str
