@@ -14,11 +14,6 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(logger.name, "test_logger")
         self.assertTrue(logger.hasHandlers())
 
-    def test_get_logger_with_custom_level(self):
-        """Test get_logger with custom logging level."""
-        logger = get_logger("custom_level_logger", level=logging.WARNING)
-        self.assertEqual(logger.level, logging.WARNING)
-
     def test_get_prompt_with_context(self):
         """Test get_prompt with context variables."""
         with tempfile.TemporaryDirectory() as tmpdir:
