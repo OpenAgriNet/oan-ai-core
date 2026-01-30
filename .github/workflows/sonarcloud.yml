@@ -28,9 +28,14 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install pytest pytest-cov
 
-      - name: Run tests with coverage
+      - name: Run tests with coverage (if tests exist)
         run: |
-          pytest --cov=. --cov-report=xml:coverage.xml --cov-report=term-missing    
+          if find . -type f \( -name "test_*.py" -o -name "*_test.py" \) | grep -q .; then
+            echo "Tests found, running pytest with coverage"
+            pytest --cov=. --cov-report=xml:coverage.xml --cov-report=term-missing
+          else
+            echo "No tests found yet — skipping pytest"
+          fi   
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarqube-scan-action@a31c9398be7ace6bbfaf30c0bd5d415f843d45e9
