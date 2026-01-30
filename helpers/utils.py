@@ -12,7 +12,7 @@ def get_logger(name):
         logger.addHandler(ch)
     return logger
 
-def get_prompt(prompt_file: str, context: dict = {}, prompt_dir: str = "assets/prompts") -> str:
+def get_prompt(prompt_file: str, context: dict = None, prompt_dir: str = "assets/prompts") -> str:
     if not prompt_file.endswith(".md"):
         prompt_file += ".md"
     
@@ -29,4 +29,6 @@ def get_prompt(prompt_file: str, context: dict = {}, prompt_dir: str = "assets/p
         autoescape=select_autoescape(['html', 'xml'])
     )
     template = env.get_template(prompt_file)
+    if context is None:
+        context = {}
     return template.render(**context)
