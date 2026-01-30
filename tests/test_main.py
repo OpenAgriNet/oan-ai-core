@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch, AsyncMock, MagicMock
 from fastapi.testclient import TestClient
-from main import app, ModerationRequest
+from main import app
 
 
 class TestMainAPI(unittest.TestCase):
