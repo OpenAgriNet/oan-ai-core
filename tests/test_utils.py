@@ -1,5 +1,6 @@
 import unittest
 import os
+import logging
 import tempfile
 from helpers.utils import get_logger, get_prompt
 
@@ -42,6 +43,23 @@ class TestUtils(unittest.TestCase):
             
             prompt = get_prompt("test_template", context={"name": "John", "age": 30}, prompt_dir=relative_path)
             self.assertEqual(prompt, "Hello John, you are 30 years old.")
+
+    def test_get_prompt_missing_file(self):
+        """Test get_prompt with non-existent file."""
+        with self.assertRaises(FileNotFoundError) as context:
+            get_prompt("nonexistent_file")
+        self.assertIn("not found", str(context.exception))
+
+    def test_get_prompt_missing_directory(self):
+        """Test get_prompt with non-existent directory."""
+        with self.assertRaises(FileNotFoundError) as context:
+            get_prompt("test", prompt_dir="nonexistent_dir")
+        self.assertIn("Prompt directory not found", str(context.exception))
+
+    def test_get_logger_with_custom_level(self):
+        """Test get_logger with custom logging level."""
+        logger = get_logger("custom_level_logger", level=logging.WARNING)
+        self.assertEqual(logger.level, logging.WARNING)
 
 
 if __name__ == '__main__':

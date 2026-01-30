@@ -6,6 +6,13 @@ from helpers.utils import get_prompt
 from agents.models import get_llm_model
 
 class QueryModerationResult(BaseModel):
+    """
+    Result model for query moderation.
+    
+    Attributes:
+        category: Classification category for the query
+        action: Recommended action to take
+    """
     category: Literal[
         "valid_agricultural",
         "invalid_language", 
@@ -19,10 +26,26 @@ class QueryModerationResult(BaseModel):
     def __str__(self):
         return f"[{self.category}] {self.action}"
 
-moderation_agent = Agent(
-    model=get_llm_model(),
-    name="Moderation Agent",
-    system_prompt=get_prompt('moderation_system'),
-    output_type=QueryModerationResult,
-    model_settings=ModelSettings(temperature=0.0)
-)
+_moderation_agent = None
+
+def get_moderation_agent() -> Agent:
+    """
+    Get or create the moderation agent instance (lazy initialization).
+    
+    Returns:
+        Agent: Configured moderation agent
+        
+    Raises:
+        ValueError: If LLM configuration is invalid
+        FileNotFoundError: If prompt template is not found
+    """
+    global _moderation_agent
+    if _moderation_agent is None:
+        _moderation_agent = Agent(
+            model=get_llm_model(),
+            name="Moderation Agent",
+            system_prompt=get_prompt('moderation_system'),
+            output_type=QueryModerationResult,
+            model_settings=ModelSettings(temperature=0.0)
+        )
+    return _moderation_agent

@@ -10,25 +10,29 @@ class TestMainAPI(unittest.TestCase):
         """Set up test client."""
         self.client = TestClient(app)
 
-    @patch('main.moderation_agent.run')
-    def test_check_moderation_success(self, mock_run):
+    @patch('main.get_moderation_agent')
+    def test_check_moderation_success(self, mock_get_agent):
         """Test successful moderation check."""
+        mock_agent = MagicMock()
         mock_result = MagicMock()
         mock_result.data = {
             "category": "valid_agricultural",
             "action": "Proceed with the query"
         }
-        mock_run.return_value = mock_result
+        mock_agent.run = AsyncMock(return_value=mock_result)
+        mock_get_agent.return_value = mock_agent
         
         response = self.client.post("/moderate", json={"query": "How to grow tomatoes?"})
         
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["category"], "valid_agricultural")
 
-    @patch('main.moderation_agent.run')
-    def test_check_moderation_error(self, mock_run):
+    @patch('main.get_moderation_agent')
+    def test_check_moderation_error(self, mock_get_agent):
         """Test moderation check with error."""
-        mock_run.side_effect = Exception("Test error")
+        mock_agent = MagicMock()
+        mock_agent.run = AsyncMock(side_effect=Exception("Test error"))
+        mock_get_agent.return_value = mock_agent
         
         response = self.client.post("/moderate", json={"query": "test query"})
         

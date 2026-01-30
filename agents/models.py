@@ -5,12 +5,18 @@ from pydantic_ai.models.openai import OpenAIModel
 from pydantic_ai.models.groq import GroqModel
 from pydantic_ai.providers.groq import GroqProvider
 
+load_dotenv()
+
 def get_llm_model():
     """
     Lazily construct and return the configured LLM model.
-    This function should be called at runtime, not import time.
+    
+    Returns:
+        OpenAIModel | GroqModel: Configured LLM model instance
+        
+    Raises:
+        ValueError: If LLM_PROVIDER is invalid or API key is missing
     """
-    load_dotenv()
 
     llm_provider = os.getenv('LLM_PROVIDER', 'openai').lower()
     llm_model_name = os.getenv('LLM_MODEL_NAME', 'gpt-4o')
