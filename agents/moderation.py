@@ -52,3 +52,11 @@ def get_moderation_agent() -> Agent:
             model_settings=ModelSettings(temperature=0.0)
         )
     return _moderation_agent
+
+def reset_moderation_agent() -> None:
+    """
+    Reset the moderation agent singleton. 
+    Primarily used for testing to ensure clean state between tests.
+    """
+    global _moderation_agent
+    _moderation_agent = None
