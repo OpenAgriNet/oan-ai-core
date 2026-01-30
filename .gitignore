@@ -1,3 +1,8 @@
 .env
 .sonarlint
 .vscode
+.pytest_cache
+tests\__pycache__
+agents\__pycache__
+helpers\__pycache__
+__pycache__

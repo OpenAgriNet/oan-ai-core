@@ -1,7 +1,7 @@
 
 import unittest
 from unittest.mock import patch, MagicMock, AsyncMock
-from agents.moderation import moderation_agent, QueryModerationResult, LLM_MODEL
+from agents.moderation import moderation_agent, QueryModerationResult
 
 class TestModerationAgent(unittest.IsolatedAsyncioTestCase):
 
