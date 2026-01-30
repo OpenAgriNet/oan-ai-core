@@ -12,7 +12,9 @@ def get_logger(name):
         logger.addHandler(ch)
     return logger
 
-def get_prompt(prompt_file: str, context: dict = {}, prompt_dir: str = "assets/prompts") -> str:
+def get_prompt(prompt_file: str, context: dict = None, prompt_dir: str = "assets/prompts") -> str:
+    if context is None:
+        context = {}
     if not prompt_file.endswith(".md"):
         prompt_file += ".md"
     
