@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from typing import Literal
 from pydantic_ai import Agent
 from pydantic_ai.settings import ModelSettings
