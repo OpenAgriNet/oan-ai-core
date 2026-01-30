@@ -18,8 +18,11 @@ class QueryModerationResult(BaseModel):
         "invalid_language", 
         "invalid_non_agricultural",
         "invalid_external_reference",
+        "invalid_compound_mixed",
+        "cultural_sensitive",
         "unsafe_illegal",
-        "political_controversial"
+        "political_controversial",
+        "role_obfuscation",
     ]
     action: str
 
