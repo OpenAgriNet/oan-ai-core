@@ -4,9 +4,6 @@ import sys
 import unittest
 from unittest.mock import patch, MagicMock
 
-# Add the project root to the path so we can import helpers
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 from helpers.utils import get_logger, get_prompt
 
 class TestUtils(unittest.TestCase):
