@@ -29,4 +29,4 @@ elif LLM_PROVIDER == 'groq':
         ),
     )
 else:
-    raise ValueError(f"Invalid LLM_PROVIDER: {LLM_PROVIDER}. Must be one of: 'gemini', 'qwen', 'openai'")
+    raise ValueError(f"Invalid LLM_PROVIDER: {LLM_PROVIDER}. Must be one of: 'openai', 'groq'")
