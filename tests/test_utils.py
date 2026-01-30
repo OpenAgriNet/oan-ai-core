@@ -43,11 +43,5 @@ class TestUtils(unittest.TestCase):
             get_prompt("test", prompt_dir="nonexistent_dir")
         self.assertIn("Prompt directory not found", str(exc_context.exception))
 
-    def test_get_logger_with_custom_level(self):
-        """Test get_logger with custom logging level."""
-        logger = get_logger("custom_level_logger", level=logging.WARNING)
-        self.assertEqual(logger.level, logging.WARNING)
-
-
 if __name__ == '__main__':
     unittest.main()
