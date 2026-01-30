@@ -1,11 +1,11 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from agents.moderation import moderation_agent
 
 app = FastAPI(title="Moderation Microservice")
 
 class ModerationRequest(BaseModel):
-    query: str
+    query: str = Field(..., min_length=1, max_length=5000)
 
 @app.post("/moderate")
 async def check_moderation(request: ModerationRequest):
