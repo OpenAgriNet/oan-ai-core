@@ -54,20 +54,21 @@ class TestUtils(unittest.TestCase):
         
         # First call with INFO level
         logger1 = get_logger(logger_name, level=logging.INFO)
-        self.assertEqual(len(logger1.handlers), 1)
+        initial_handler_count = len(logger1.handlers)
+        self.assertGreaterEqual(initial_handler_count, 1)
         self.assertEqual(logger1.level, logging.INFO)
         
-        # Second call with different level - should replace handler, not duplicate
+        # Second call with different level - should not add duplicate handler
         logger2 = get_logger(logger_name, level=logging.WARNING)
-        self.assertEqual(len(logger2.handlers), 1)
+        self.assertEqual(len(logger2.handlers), initial_handler_count)
         self.assertEqual(logger2.level, logging.WARNING)
         
         # Verify it's the same logger instance
         self.assertIs(logger1, logger2)
         
-        # Third call with same level - still should have only one handler
+        # Third call with same level - still should have same number of handlers
         logger3 = get_logger(logger_name, level=logging.WARNING)
-        self.assertEqual(len(logger3.handlers), 1)
+        self.assertEqual(len(logger3.handlers), initial_handler_count)
 
 
 if __name__ == '__main__':

@@ -2,6 +2,9 @@ import os
 import logging
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
+# Track handlers created by get_logger to avoid duplicates
+_logger_handlers = {}
+
 def get_logger(name: str, level: int = logging.INFO) -> logging.Logger:
     """
     Get or create a logger with the specified name and level.
@@ -15,9 +18,11 @@ def get_logger(name: str, level: int = logging.INFO) -> logging.Logger:
     """
     logger = logging.getLogger(name)
     
-    # Remove existing handlers to prevent duplication and ensure consistent configuration
-    for handler in logger.handlers[:]:
-        logger.removeHandler(handler)
+    # Remove and close only handlers created by this function
+    if name in _logger_handlers:
+        old_handler = _logger_handlers[name]
+        logger.removeHandler(old_handler)
+        old_handler.close()
     
     # Add a new handler with the specified level
     ch = logging.StreamHandler()
@@ -26,6 +31,9 @@ def get_logger(name: str, level: int = logging.INFO) -> logging.Logger:
     ch.setLevel(level)
     logger.addHandler(ch)
     logger.setLevel(level)
+    
+    # Track the handler for future cleanup
+    _logger_handlers[name] = ch
     
     return logger
 
