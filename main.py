@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 from agents.moderation import get_moderation_agent
 from helpers.utils import get_logger
 
-app = FastAPI(title="Moderation Microservice")
+app = FastAPI(title="Moderation Layer API")
 logger = get_logger(__name__)
 
 class ModerationRequest(BaseModel):
